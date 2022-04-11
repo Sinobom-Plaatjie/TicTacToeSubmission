@@ -9,7 +9,7 @@ namespace TicTacToeSubmissionConole
     public class TicTacToe
     {
         private TicTacToeConsoleRenderer _boardRenderer;
-        private int[] _boardPosition = new int[9];
+        private int[] _boardPosition = new int[] {2,2,2,2,2,2,2,2,2};
         private int _rounds;
 
 
@@ -18,13 +18,13 @@ namespace TicTacToeSubmissionConole
             _boardRenderer = new TicTacToeConsoleRenderer(10,6);
             _boardRenderer.Render();
         }
-        private void PlayMove(int player)
+        private void PlayMove(PlayerEnum player)
         {
             Console.SetCursorPosition(2, 19);
 
-            if(player == 1)
-            Console.Write("Player X");
-             else
+            if (player == PlayerEnum.X)
+                Console.Write("Player X");
+            else
                 Console.Write("Player O");
 
 
@@ -39,56 +39,58 @@ namespace TicTacToeSubmissionConole
             Console.Write("Please Enter Column: ");
             var column = Console.ReadLine();
 
-            Console.Clear();
+           
+           Console.Clear();
 
-            //store move in array
+        //store move in array
             int rowNumber = int.Parse(row);
             int columnNumber = int.Parse(column);
             int arrayPos = (rowNumber * 3) + columnNumber;
 
-            _boardPosition[arrayPos] = player;
+            _boardPosition[arrayPos] = (int) player;
 
-            if (player == 1)
-                _boardRenderer.AddMove(rowNumber, columnNumber, PlayerEnum.X, true);
-            else
-                _boardRenderer.AddMove(rowNumber, columnNumber, PlayerEnum.O, true);
-
-            //Console.Clear();
+            _boardRenderer.AddMove(rowNumber, columnNumber, player, true);
+            /* if (player == PlayerEnum.X)
+                 _boardRenderer.AddMove(rowNumber, columnNumber, PlayerEnum.X, true);
+             else
+                 _boardRenderer.AddMove(rowNumber, columnNumber, PlayerEnum.O, true);
+ */
         }
-        public bool CheckIfWins(int player)
-        {   //*Horizontal win
-            if ((_boardPosition[0] == player) && (_boardPosition[1] == player) && (_boardPosition[2] == player))
+        public bool CheckIfWins(PlayerEnum player)
+        {
+           int playerValue = (int)player;
+            if ((_boardPosition[0] == playerValue) && (_boardPosition[1] == playerValue) && (_boardPosition[2] == playerValue))
                
                 return true;
-            //*diagonal win 
-            if ((_boardPosition[0] == player) && (_boardPosition[4] == player) && (_boardPosition[8] == player))
+            
+            if ((_boardPosition[0] == playerValue) && (_boardPosition[4] == playerValue) && (_boardPosition[8] == playerValue))
 
                 return true;
 
-            //*vertical win
+            
 
-            if ((_boardPosition[0] == player) && (_boardPosition[3] == player) && (_boardPosition[6] == player))
-
-                return true;
-
-            //*
-            if ((_boardPosition[3] == player) && (_boardPosition[4] == player) && (_boardPosition[5] == player))
-
-                return true;
-            //*
-            if ((_boardPosition[6] == player) && (_boardPosition[7] == player) && (_boardPosition[8] == player))
-
-                return true;
-            //*
-            if ((_boardPosition[6] == player) && (_boardPosition[4] == player) && (_boardPosition[2] == player))
+            if ((_boardPosition[0] == playerValue) && (_boardPosition[3] == playerValue) && (_boardPosition[6] == playerValue))
 
                 return true;
 
-            if ((_boardPosition[1] == player) && (_boardPosition[4] == player) && (_boardPosition[7] == player))
+           
+            if ((_boardPosition[3] == playerValue) && (_boardPosition[4] == playerValue) && (_boardPosition[5] == playerValue))
+
+                return true;
+            
+            if ((_boardPosition[6] == playerValue) && (_boardPosition[7] == playerValue) && (_boardPosition[8] == playerValue))
+
+                return true;
+           
+            if ((_boardPosition[6] == playerValue) && (_boardPosition[4] == playerValue) && (_boardPosition[2] == playerValue))
 
                 return true;
 
-            if ((_boardPosition[2] == player) && (_boardPosition[5] == player) && (_boardPosition[8] == player))
+            if ((_boardPosition[1] == playerValue) && (_boardPosition[4] == playerValue) && (_boardPosition[7] == playerValue))
+
+                return true;
+
+            if ((_boardPosition[2] == playerValue) && (_boardPosition[5] == playerValue) && (_boardPosition[8] == playerValue))
 
                 return true;
 
@@ -104,23 +106,23 @@ namespace TicTacToeSubmissionConole
 
             while (_rounds < 4)
             {
-                PlayMove(1);
-                playerXWins = CheckIfWins(1);
+                PlayMove(PlayerEnum.X);
+                playerXWins = CheckIfWins(PlayerEnum.X);
 
                 if(playerXWins)
                 {
-                    Console.SetCursorPosition(22, 27);
+                    Console.SetCursorPosition(20, 20);
                     Console.WriteLine("Player X Win!!");
                     break;
                 }
               
 
-                PlayMove(2);
-                playerOWins = CheckIfWins(2);
+                PlayMove(PlayerEnum.O);
+                playerOWins = CheckIfWins(PlayerEnum.O);
 
                 if (playerOWins)
                 {
-                    Console.SetCursorPosition(22, 27);
+                    Console.SetCursorPosition(20, 20);
                     Console.WriteLine("Player O Win!!");
                     break;
                 }
@@ -130,7 +132,7 @@ namespace TicTacToeSubmissionConole
             }
             if (!playerXWins && !playerOWins)
             {
-                Console.SetCursorPosition(22, 27);
+                Console.SetCursorPosition(20, 20);
                 Console.WriteLine("The game is draw!");
 
             }
